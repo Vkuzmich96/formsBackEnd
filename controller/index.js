@@ -1,5 +1,6 @@
 const express = require('express');
-const db = require ('./db');
+
+const db = require('../service');
 const app = express();
 
 
@@ -9,17 +10,20 @@ app.use((req, res, next) => {
 });
 
 
-
-app.get("/registration", (req,resp) =>{
+app.get("/registration", (req,resp) => {
     db.put(req.query.name, req.query.email, req.query.password, null, null);
-    resp.send(true);
+    resp.send("true");
 });
+
+
 
 app.get("/enter", (req,resp) =>{
     if(db.equals(req.query.email, req.query.password)){
-        resp.send(true)
+        console.log("true");
+        resp.send("true")
     }else {
-        resp.send(false);
+        console.log("false");
+        resp.send("false");
     }
 });
 
