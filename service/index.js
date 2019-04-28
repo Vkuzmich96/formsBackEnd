@@ -1,22 +1,38 @@
 const User = require('../entety/User');
 
 let array = [];
-let flag=0;
 
 exports.put = (name, email, password, phone, address) => {
-    let object = new User(name, email, password, phone, address);
-    console.log(object);
-    array.push(object);
-    flag++
+    if(!_findUser(email)) {
+        array.push(new User(name, email, password, phone, address));
+        return true
+    }else{
+        return false
+    }
 };
 
 exports.equals = (email, password) => {
-    console.log(email + " " + password);
-
-    for(let i=0; i<flag; i++){
-        if(array[i].email === email&&array[i].password===password) {
-            return true;
+    let result = false;
+    array.forEach((value)=>{
+        if (value.email === email&&value.password===password){
+            result = true;
         }
-    }
-    return false;
+    });
+    return result;
+};
+
+_findUser =(email)=>{
+    let result = null;
+    array.forEach((value)=>{
+        if (value.email === email){
+            result = value;
+        }
+    });
+    return result;
+};
+
+exports.update =(email, number, address)=>{
+    let user = _findUser(email);
+    user.phone = number;
+    user.address = address;
 };

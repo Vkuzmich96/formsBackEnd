@@ -1,6 +1,6 @@
 const express = require('express');
 
-const db = require('../service');
+const service = require('../service');
 const app = express();
 
 
@@ -11,23 +11,24 @@ app.use((req, res, next) => {
 
 
 app.get("/registration", (req,resp) => {
-    db.put(req.query.name, req.query.email, req.query.password, null, null);
-    resp.send("true");
+    if(service.put(req.query.name, req.query.email, req.query.password, null, null)){
+        resp.send("true");
+    }else {
+        resp.send('');
+    }
 });
 
-
-
 app.get("/enter", (req,resp) =>{
-    if(db.equals(req.query.email, req.query.password)){
-        console.log("true");
+    if(service.equals(req.query.email, req.query.password)){
         resp.send("true")
     }else {
-        console.log("false");
-        resp.send("false");
+        resp.send('');
     }
 });
 
 app.get("/update", (req, resp) =>{
+    service.update(req.query.id, req.query.number, req.query.address);
+    resp.send("true")
 });
 
 app.listen(8080, ()=>
